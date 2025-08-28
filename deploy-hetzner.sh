@@ -10,7 +10,7 @@ echo "======================================================"
 SERVER_USER=${SERVER_USER:-root}
 SERVER_HOST=${SERVER_HOST:-""}
 DEPLOY_PATH=${DEPLOY_PATH:-/opt/doichain}
-DOCKER_COMPOSE_FILE=${DOCKER_COMPOSE_FILE:-docker-compose-email-doi-testnet.yml}
+DOCKER_COMPOSE_FILE=${DOCKER_COMPOSE_FILE:-docker-compose-email-doi-mainnet.yml}
 
 # Check required variables
 if [ -z "$SERVER_HOST" ]; then
