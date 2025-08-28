@@ -76,10 +76,10 @@ RUN echo '12edc0df75bf9abd7f82f821795bcee50f42cb2e5f76a6a281b85732798364ef  db-4
 	sudo ln -s /usr/include/db4.8/lib/* /usr/lib && \
     sudo ln -s /usr/include/db4.8/include/* /usr/include
 
-#Install doichain-core
+#Install doichain-core (updated version for nc29-migration testing)
 WORKDIR /home/doichain
 RUN mkdir .doichain && \
-	sudo git clone --branch $DOICHAIN_VER https://github.com/Doichain/doichain-core.git && \
+	sudo git clone --branch doichain-nc29-migration https://github.com/davidreband/doichain-core.git && \
 	cd doichain-core && \
 	sudo ./autogen.sh && sudo ./configure --without-gui --disable-tests  --disable-gui-tests && \
 	sudo make && \

@@ -29,7 +29,8 @@ services:
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
     
   doichain-testnet:
-    image: "doichain/core:dc0.20.1.13" 
+    build: ./doichain
+    image: "doichain/core:nc29-migration" 
     container_name: doichain-testnet
     hostname: doichain-testnet
     ports:

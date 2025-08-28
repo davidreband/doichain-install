@@ -20,7 +20,8 @@ services:
         ipv4_address: 172.21.0.5
 
   doichain:
-   image: "doichain/core:dc0.20.1.13" 
+   build: ./doichain
+   image: "doichain/core:nc29-migration" 
    container_name: doichain
    hostname: doichain
    ports:
