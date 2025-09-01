@@ -1,5 +1,5 @@
 set -euo pipefail
 
-/home/bitcoin/scripts/bitcoin-start.sh &
+/home/bitcoin/scripts/bitcoin-start.sh
 
-exec /bin/bash
+tail -f /dev/null

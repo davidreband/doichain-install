@@ -1,6 +1,6 @@
-FROM ubuntu
+FROM ubuntu:22.04
 
-ARG BITCOIN_VER=v0.20.0
+ARG BITCOIN_VER=v29.0
 ENV BITCOIN_VER $BITCOIN_VER
 
 #Setup run vars
@@ -26,10 +26,11 @@ RUN apt-get update && apt-get install -y \
 	apt-utils \
 	bsdmainutils \
 	build-essential \
+	cmake \
+	python3 \
 	curl \
 	jq \
 	vim \
-	jq \
 	unzip \
 	bc \
 	libarchive-tools \
@@ -63,11 +64,10 @@ USER bitcoin
 #Install BITCOIN-core
 WORKDIR /home/bitcoin
 RUN 	sudo git clone --branch ${BITCOIN_VER} --depth 1 https://github.com/bitcoin/bitcoin.git bitcoin-core && cd bitcoin-core && \
-	sudo ./contrib/install_db4.sh `pwd` && \
-	sudo ./autogen.sh && \
-	sudo ./configure --without-gui  --disable-tests  --disable-gui-tests BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" CXXFLAGS="--param ggc-min-expand=1 --param ggc-min-heapsize=32768" && \
-	sudo make && \
-	sudo make install
+	sudo make -C depends NO_QT=1 NO_ZMQ=1 NO_USDT=1 && \
+	sudo cmake -B build --toolchain depends/x86_64-pc-linux-gnu/toolchain.cmake -DBUILD_GUI=OFF -DENABLE_TESTS=OFF && \
+	sudo cmake --build build -j$(nproc) && \
+	sudo cmake --install build
 
 #Copy start scripts
 WORKDIR /home/bitcoin/scripts/
@@ -91,11 +91,9 @@ WORKDIR /home/bitcoin
 RUN mkdir data && \
 	cd data && \
 	mkdir bitcoin && \
-	sudo chown -R bitcoin /home/bitcoin && \
 	ls -l /home/bitcoin && \
 	ls -l /home/bitcoin/data && \
-#	sudo rm -rf /home/bitcoin/.bitcoin && \
-	sudo ln -s /home/bitcoin/data/bitcoin /home/bitcoin/.bitcoin
+	ln -s /home/bitcoin/data/bitcoin /home/bitcoin/.bitcoin
 
 #Run entrypoint
 WORKDIR /home/bitcoin
