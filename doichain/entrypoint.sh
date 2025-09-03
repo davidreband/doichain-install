@@ -66,7 +66,13 @@ rpcport=${_RPC_PORT}
 rpcbind=0.0.0.0
 rpcallowip=0.0.0.0/0
 wallet=1
-port=${_NODE_PORT}" > $DOICHAIN_CONF_FILE
+port=${_NODE_PORT}
+
+[main]
+rpcport=${_RPC_PORT}
+rpcbind=0.0.0.0
+wallet=1
+port=${NODE_PORT}" > $DOICHAIN_CONF_FILE
 fi
 
 exec "$@"

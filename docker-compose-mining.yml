@@ -3,7 +3,7 @@ version: '3.7'
 services:
   bitcoin: 
     build: ./bitcoin
-    image: "davidreband/bitcoind:v29.0-custom"
+    image: "davidreband/bitcoind:v29.0-test"
     container_name: bitcoin
     hostname: bitcoin
     ports:
