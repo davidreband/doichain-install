@@ -10,6 +10,31 @@ This is a Docker-based infrastructure repository for running Doichain blockchain
 
 The repository provides three main deployment configurations:
 
+### Docker Build Architecture
+
+Doichain containers use a multi-stage build approach:
+- **Base Image** (`davidreband/doichain-base:dc29-test`) - Contains Ubuntu 22.04, Berkeley DB 4.8, and all dependencies required for Doichain compilation
+- **Final Image** (`doichain/core:dc29-test`) - Built from base image, contains compiled Doichain Core binaries with NC29 migration support
+
+**Standard Port Configuration:**
+- Doichain P2P: 8339 (for blockchain network)
+
+**Important:** The base image must be rebuilt when configuration changes are made to `entrypoint.sh` or `Dockerfile.base`. Use `--no-cache` flag to ensure changes are applied.
+
+**Build Process:**
+```bash
+# Build base image (contains dependencies and Berkeley DB)
+docker build -t davidreband/doichain-base:dc29-test doichain/ -f doichain/Dockerfile.base
+
+# Build final image (contains compiled Doichain Core)  
+docker build -t doichain/core:dc29-test doichain/
+```
+
+**Configuration Notes:**
+- Berkeley DB 4.8 is required for legacy wallet support (wallet=1 enabled)
+- SQLite is used for new descriptor wallets
+- Multi-stage build reduces final image size while maintaining all dependencies
+
 ### Mining Environment (`docker-compose-mining.yml`)
 - **Bitcoin Core Node** (doichain/bitcoind:v0.20.0) - Pruned Bitcoin blockchain on port 8332/8333
 - **Doichain Core Node** (doichain/core:dc0.20.1.13) - Main Doichain blockchain node on port 8339

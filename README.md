@@ -1,6 +1,33 @@
 # Doichain Environment via Docker Compose 
 
 This repository provides the necessary Docker Compose file, Dockerfiles and/or images to start a complete Doichain Node environment including:
+
+## Docker Build Architecture
+
+The project uses multi-stage Docker builds for both Bitcoin and Doichain:
+
+**Bitcoin Core:**
+- **Bitcoin Image** (`davidreband/bitcoind:v29.0-test`) - Bitcoin Core v29.0 built with CMake, includes pruning support
+
+**Doichain Core:**
+- **Base Image** (`davidreband/doichain-base:dc29-test`) - Contains Ubuntu 22.04, Berkeley DB 4.8, and all dependencies required for Doichain compilation
+- **Final Image** (`doichain/core:dc29-test`) - Built from base image, contains compiled Doichain Core binaries with NC29 migration support
+
+### Build Process
+```bash
+# Build Bitcoin Core v29.0 image
+docker build -t davidreband/bitcoind:v29.0-test bitcoin/
+
+# Build Doichain base image (contains dependencies and Berkeley DB)
+docker build -t davidreband/doichain-base:dc29-test doichain/ -f doichain/Dockerfile.base
+
+# Build final Doichain image (contains compiled Doichain Core)  
+docker build -t doichain/core:dc29-test doichain/
+```
+
+**Important:** The base image must be rebuilt with `--no-cache` when configuration changes are made to `entrypoint.sh` or `Dockerfile.base`.
+
+## Components
 - Doichain Core Node
 - P2Pool (P2P Merge Mining Pool to merge mine Bitcoin and Doichain)
 - Bitcoin Core Node (pruned) dependency to merge mine Doichain via P2Pool
