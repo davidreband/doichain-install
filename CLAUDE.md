@@ -17,7 +17,7 @@ Doichain containers use a multi-stage build approach:
 - **Final Image** (`doichain/core:dc29-test`) - Built from base image, contains compiled Doichain Core binaries with NC29 migration support
 
 **Standard Port Configuration:**
-- Doichain P2P: 8339 (for blockchain network)
+- Doichain P2P: 8338 (for blockchain network)
 
 **Important:** The base image must be rebuilt when configuration changes are made to `entrypoint.sh` or `Dockerfile.base`. Use `--no-cache` flag to ensure changes are applied.
 

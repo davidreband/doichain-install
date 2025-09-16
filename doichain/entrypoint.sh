@@ -47,8 +47,11 @@ rpcuser=${RPC_USER}
 rpcpassword=${RPC_PASSWORD}
 rpcbind=0.0.0.0
 rpcallowip=${RPC_ALLOW_IP}
+bind=0.0.0.0:${_NODE_PORT}
 txindex=1
 fallbackfee=0.0002
+port=${_NODE_PORT}
+rpcport=${_RPC_PORT}
 namehistory=1
 rpcworkqueue=100
 blocknotify=curl -X GET ${DAPP_URL}/api/v1/blocknotify?block=%s
@@ -66,13 +69,7 @@ rpcport=${_RPC_PORT}
 rpcbind=0.0.0.0
 rpcallowip=0.0.0.0/0
 wallet=1
-port=${_NODE_PORT}
-
-[main]
-rpcport=${_RPC_PORT}
-rpcbind=0.0.0.0
-wallet=1
-port=${NODE_PORT}" > $DOICHAIN_CONF_FILE
+port=${_NODE_PORT}" > $DOICHAIN_CONF_FILE
 fi
 
 exec "$@"

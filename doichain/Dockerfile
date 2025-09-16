@@ -1,4 +1,4 @@
-FROM davidreband/doichain-base:dc29-test
+FROM davidreband/doichain-base:dc29
 
 ARG DOICHAIN_VER=doichain-nc29-migration 
 ENV DOICHAIN_VER $DOICHAIN_VER
